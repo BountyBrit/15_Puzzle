@@ -7,10 +7,22 @@ import android.widget.Button;
 import android.widget.Toast;
 import java.util.Random;
 
+/*
+ * MainActivity
+ *
+ * This is the main class for the 15 puzzle, initializing
+ * the board and buttons and creating events for the buttons
+ * Other methods check spaces, update the buttons, and
+ * shuffle the board.
+ *
+ * @author M. Brit Dannen
+ * @version February 2023
+ */
 public class MainActivity extends AppCompatActivity {
 
     private Board board;
     private Button[][] buttons;
+    private Button shuffleButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
         buttons[3][2] = findViewById(R.id.button_15);
         buttons[3][3] = findViewById(R.id.button_16);
 
+        shuffleButton = findViewById(R.id.button2);
+
         // Calls the shuffleBoard method
         shuffleBoard();
 
@@ -58,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
                             // Update the button text and check for win condition
                             updateButtons();
                             if (board.isSolved()) {
+                                // Displays a congratulatory message when the user successfully completes the puzzle
                                 Toast.makeText(MainActivity.this, "You win!", Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -67,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // updateButtons updates all of the buttons on the baord
     private void updateButtons() {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
@@ -76,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //isAdjacentToEmptySpace checks the adjacent space of the clicked button
     private boolean isAdjacentToEmptySpace(int row, int col) {
         int emptySpaceRow = getEmptySpaceRow();
         int emptySpaceCol = getEmptySpaceCol();
@@ -83,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
                 (col == emptySpaceCol && Math.abs(row - emptySpaceRow) == 1);
     }
 
+    // getEmptySpaceRow returns the row of the empty space
     private int getEmptySpaceRow() {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
@@ -94,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
         return -1; // should never happen
     }
 
+    // getEmptySpaceCol returns the row of the empty space
     private int getEmptySpaceCol() {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
@@ -105,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
         // If there is no empty space, return -1 to indicate an error
         return -1;
     }
+    // shuffleBoard shuffles all of the buttons on the board and empty space
     private void shuffleBoard() {
         Random random = new Random();
 
@@ -141,6 +161,11 @@ public class MainActivity extends AppCompatActivity {
 
         // Update the button text and background to match the board state
         updateButtons();
+    }
+
+    // onShuffleClick calls shuffleBoard() when the shuffle button is clicked
+    public void onShuffleClick(View view){
+        shuffleBoard(); // Shuffles the board when the shuffle button is clicked
     }
 
 }
